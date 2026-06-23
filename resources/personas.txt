@@ -1,0 +1,14 @@
+EMPLEADO;15.456.789-5;María Loreto;González Díaz;maria.gonzalez@llanquihuetour.cl;+56 9 9876 5432;Calle Bernardo O'Higgins;450;Llanquihue;Llanquihue;Guía de Turismo Local;850000
+EMPLEADO;18.123.456-3;Carlos Andrés;Muñoz Rojas;carlos.munoz@llanquihuetour.cl;+56 9 1234 5678;Av. Presidente Ibáñez;840;Puerto Montt;Puerto Montt;Coordinador de Reservas;720000
+OPERADOR;12.345.678-5;Juan Carlos;Pérez Soto;juan.perez@correo.cl;+56 9 8765 4321;Av. Costanera Vicente Pérez Rosales;1020;Puerto Varas;Puerto Varas;Operador Lacustre S.A.;Paseos Lacustres
+PROVEEDOR;19.005.119-6;Ana María;Jara Silva;ana.jara@llanquihuetour.cl;+56 9 7766 5544;Calle San Francisco;220;Puerto Varas;Puerto Varas;Transportes Llanquihue;Transporte
+# Fila con RUT inválido (debe ser ignorada capturando la excepción en GestorDatos)
+EMPLEADO;12.345.678-0;Pedro;Errázuriz;pedro@correo.cl;+56 9 9999 8888;Calle O'Higgins;123;Llanquihue;Llanquihue;Guía Junior;400000
+# Fila con correo inválido (sin '@' o '.', debe ser ignorada capturando la excepción)
+OPERADOR;14.223.344-4;Luis;Vega;luis.vegacorreo.cl;+56 9 5555 4444;Calle Balmaceda;102;Puerto Varas;Puerto Varas;Turismo Volcán;Excursiones
+# Fila con sueldo inválido (negativo, debe ser ignorada capturando la excepción)
+EMPLEADO;16.123.456-7;Marta;Tapia;marta.tapia@correo.cl;+56 9 1111 2222;Calle Prat;444;Puerto Montt;Puerto Montt;Recepcionista;-50000
+# Fila con RUT duplicado (ya se cargó el RUT 15.456.789-5, debe ser omitida)
+EMPLEADO;15.456.789-5;María;González;maria@correo.cl;+56 9 9876 5432;Calle Bernardo O'Higgins;450;Llanquihue;Llanquihue;Guía de Turismo Local;850000
+EMPLEADO;20.555.666-7;Felipe;Gómez;felipe.gomez@correo.cl;+56 9 2222 3333;Calle Nueva;77;Puerto Varas;Puerto Varas;Guía Senior;950000
+OPERADOR;17.888.999-1;Sofía;López;sofia.lopez@correo.cl;+56 9 4444 5555;Avenida Central;88;Llanquihue;Llanquihue;Operador Navegación;Excursiones Acuáticas
