@@ -1,4 +1,4 @@
-package service;
+package data;
 
 import model.*;
 import util.ValidadorRut;

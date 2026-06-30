@@ -52,7 +52,7 @@ Write-Host "2. Compilando aplicación principal (Service y App)..." -ForegroundC
 Write-Host "=========================================================" -ForegroundColor Cyan
 
 # Compilar el resto utilizando la librería jar
-javac -encoding UTF-8 -cp "dist/lib/llanquihue-tour-lib.jar" -d out src/service/*.java src/app/*.java
+javac -encoding UTF-8 -cp "dist/lib/llanquihue-tour-lib.jar" -d out src/data/*.java src/ui/*.java
 if ($LASTEXITCODE -ne 0) {
     Write-Error "Fallo en la compilación de la aplicación."
     exit $LASTEXITCODE
@@ -64,4 +64,4 @@ Write-Host "3. Iniciando Aplicación Llanquihue Tour v2.0..." -ForegroundColor C
 Write-Host "=========================================================" -ForegroundColor Cyan
 
 # Ejecutar la aplicación enlazando la librería
-java "-Dfile.encoding=UTF-8" -cp "out;dist/lib/llanquihue-tour-lib.jar" app.Main
+java "-Dfile.encoding=UTF-8" -cp "out;dist/lib/llanquihue-tour-lib.jar" ui.Main

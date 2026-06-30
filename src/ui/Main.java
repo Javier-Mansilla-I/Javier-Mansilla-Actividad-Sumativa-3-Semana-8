@@ -1,7 +1,8 @@
-package app;
+package ui;
 
 import model.*;
-import service.GestorDatos;
+import data.GestorDatos;
+import data.GestorServicios;
 import util.ValidadorRut;
 
 import java.util.ArrayList;
@@ -14,6 +15,16 @@ import java.util.Scanner;
 public class Main {
 
     public static void main(String[] args) {
+        // --- PRUEBA DE JERARQUÍA DE SERVICIOS TURÍSTICOS (Paso 3) ---
+        System.out.println("=====================================================================");
+        System.out.println("            SERVICIOS TURÍSTICOS DISPONIBLES (PRUEBA)                ");
+        System.out.println("=====================================================================");
+        ArrayList<ServicioTuristico> servicios = GestorServicios.obtenerServiciosDePrueba();
+        for (ServicioTuristico s : servicios) {
+            System.out.println(s);
+        }
+        System.out.println("=====================================================================\n");
+
         String rutaArchivo = "resources/personas.txt";
 
         System.out.println("=====================================================================");
