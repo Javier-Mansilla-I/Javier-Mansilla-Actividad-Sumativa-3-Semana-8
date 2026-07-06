@@ -7,6 +7,7 @@ import util.ValidadorRut;
 
 import java.util.ArrayList;
 import java.util.InputMismatchException;
+import java.util.List;
 import java.util.Scanner;
 
 /**
@@ -19,9 +20,9 @@ public class Main {
         System.out.println("=====================================================================");
         System.out.println("            SERVICIOS TURÍSTICOS DISPONIBLES (PRUEBA)                ");
         System.out.println("=====================================================================");
-        ArrayList<ServicioTuristico> servicios = GestorServicios.obtenerServiciosDePrueba();
+        List<ServicioTuristico> servicios = GestorServicios.obtenerServiciosDePrueba();
         for (ServicioTuristico s : servicios) {
-            System.out.println(s);
+            s.mostrarInformacion();
         }
         System.out.println("=====================================================================\n");
 

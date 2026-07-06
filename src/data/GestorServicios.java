@@ -2,6 +2,7 @@ package data;
 
 import model.*;
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Gestor encargado de crear instancias de prueba para los Servicios Turísticos.
@@ -11,7 +12,7 @@ public class GestorServicios {
     /**
      * Crea y retorna una lista con al menos dos instancias de cada tipo de Servicio Turístico.
      */
-    public static ArrayList<ServicioTuristico> obtenerServiciosDePrueba() {
+    public static List<ServicioTuristico> obtenerServiciosDePrueba() {
         ArrayList<ServicioTuristico> servicios = new ArrayList<>();
 
         // 2 instancias de RutaGastronomica

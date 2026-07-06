@@ -1,67 +1,87 @@
-# build_and_run.ps1
-# Script para compilar la librería personalizada Llanquihue Tour y ejecutar la aplicación.
+# LlanquihueTourApp V2.0 Build and Run Script
 
-# Limpiar carpetas anteriores
-if (Test-Path "out") { Remove-Item -Recurse -Force out }
-if (Test-Path "dist") { Remove-Item -Recurse -Force dist }
-if (Test-Path "bin_lib") { Remove-Item -Recurse -Force bin_lib }
+Write-Host "====================================================" -ForegroundColor Cyan
+Write-Host " Iniciando proceso de compilación y empaquetado      " -ForegroundColor Cyan
+Write-Host "====================================================" -ForegroundColor Cyan
 
-# Crear directorios
-New-Item -ItemType Directory -Force -Path "bin_lib" | Out-Null
-New-Item -ItemType Directory -Force -Path "dist/lib" | Out-Null
-New-Item -ItemType Directory -Force -Path "out" | Out-Null
+# Intentar resolver las rutas de las herramientas de Java (JDK) de manera robusta
+$javaBin = ""
 
-Write-Host "=========================================================" -ForegroundColor Cyan
-Write-Host "1. Compilando clases del modelo y utilidades (Librería)..." -ForegroundColor Cyan
-Write-Host "=========================================================" -ForegroundColor Cyan
-
-# Compilar clases de la librería (model y util)
-javac -encoding UTF-8 -d bin_lib src/model/*.java src/util/*.java
-if ($LASTEXITCODE -ne 0) {
-    Write-Error "Fallo en la compilación de la librería."
-    exit $LASTEXITCODE
-}
-
-# Localizar el ejecutable jar.exe
-$jarPath = "jar"
-if (Test-Path "C:\Program Files\Java\jdk-23\bin\jar.exe") {
-    $jarPath = "C:\Program Files\Java\jdk-23\bin\jar.exe"
-} elseif ($env:JAVA_HOME -and (Test-Path "$env:JAVA_HOME\bin\jar.exe")) {
-    $jarPath = "$env:JAVA_HOME\bin\jar.exe"
+if (Test-Path "$env:JAVA_HOME\bin") {
+    $javaBin = "$env:JAVA_HOME\bin"
 } else {
-    $jdkDirs = Get-ChildItem -Path "C:\Program Files\Java" -Filter "jdk-*" -ErrorAction SilentlyContinue
-    if ($jdkDirs) {
-        $firstJdk = $jdkDirs[0].FullName
-        if (Test-Path "$firstJdk\bin\jar.exe") {
-            $jarPath = "$firstJdk\bin\jar.exe"
+    if (Test-Path "C:\Program Files\Java") {
+        $jdkPaths = Get-ChildItem -Path "C:\Program Files\Java" -Filter "jdk*" -Directory | Sort-Object Name -Descending
+        if ($jdkPaths.Count -gt 0) {
+            $javaBin = Join-Path $jdkPaths[0].FullName "bin"
         }
     }
 }
 
-Write-Host "Empaquetando en dist/lib/llanquihue-tour-lib.jar utilizando: $jarPath" -ForegroundColor Green
-& $jarPath -cf dist/lib/llanquihue-tour-lib.jar -C bin_lib .
-if ($LASTEXITCODE -ne 0) {
-    Write-Error "Fallo al crear el archivo JAR de la librería."
-    exit $LASTEXITCODE
+# Definir comandos
+$javacCmd = "javac"
+$jarCmd = "jar"
+$javaCmd = "java"
+
+if ($javaBin) {
+    $resolvedJavac = Join-Path $javaBin "javac.exe"
+    $resolvedJar = Join-Path $javaBin "jar.exe"
+    $resolvedJava = Join-Path $javaBin "java.exe"
+    
+    if (Test-Path $resolvedJavac) { $javacCmd = $resolvedJavac }
+    if (Test-Path $resolvedJar) { $jarCmd = $resolvedJar }
+    if (Test-Path $resolvedJava) { $javaCmd = $resolvedJava }
 }
 
-Remove-Item -Recurse -Force bin_lib
+Write-Host "Usando comandos de Java de: $javaBin" -ForegroundColor Gray
 
-Write-Host "=========================================================" -ForegroundColor Cyan
-Write-Host "2. Compilando aplicación principal (Service y App)..." -ForegroundColor Cyan
-Write-Host "=========================================================" -ForegroundColor Cyan
-
-# Compilar el resto utilizando la librería jar
-javac -encoding UTF-8 -cp "dist/lib/llanquihue-tour-lib.jar" -d out src/data/*.java src/ui/*.java
-if ($LASTEXITCODE -ne 0) {
-    Write-Error "Fallo en la compilación de la aplicación."
-    exit $LASTEXITCODE
+# 1. Limpieza de directorios previos
+if (Test-Path bin) {
+    Remove-Item -Path bin -Recurse -Force | Out-Null
+}
+if (Test-Path dist) {
+    Remove-Item -Path dist -Recurse -Force | Out-Null
 }
 
-Write-Host "Compilación exitosa." -ForegroundColor Green
-Write-Host "=========================================================" -ForegroundColor Cyan
-Write-Host "3. Iniciando Aplicación Llanquihue Tour v2.0..." -ForegroundColor Cyan
-Write-Host "=========================================================" -ForegroundColor Cyan
+# 2. Creación de directorios
+New-Item -ItemType Directory -Path bin -Force | Out-Null
+New-Item -ItemType Directory -Path dist/lib -Force | Out-Null
 
-# Ejecutar la aplicación enlazando la librería
-java "-Dfile.encoding=UTF-8" -cp "out;dist/lib/llanquihue-tour-lib.jar" ui.Main
+# 3. Obtener todos los archivos Java
+$javaFiles = Get-ChildItem -Path src -Filter *.java -Recurse | ForEach-Object { $_.FullName }
+
+if ($javaFiles.Count -eq 0) {
+    Write-Error "No se encontraron archivos fuentes Java en 'src/'"
+    exit 1
+}
+
+# 4. Compilar clases
+Write-Host "[Compilación] Compilando clases..." -ForegroundColor Yellow
+& $javacCmd -d bin $javaFiles
+
+if ($LASTEXITCODE -ne 0) {
+    Write-Error "Error de compilación de Java."
+    exit $LASTEXITCODE
+}
+Write-Host "[Compilación] Compilación exitosa." -ForegroundColor Green
+
+# 5. Empaquetar modelo en JAR
+Write-Host "[Empaquetado] Creando archivo dist/lib/model.jar..." -ForegroundColor Yellow
+& $jarCmd cf dist/lib/model.jar -C bin model
+
+if ($LASTEXITCODE -ne 0) {
+    Write-Error "Error al crear el archivo JAR."
+    exit $LASTEXITCODE
+}
+Write-Host "[Empaquetado] JAR creado exitosamente." -ForegroundColor Green
+
+# 6. Eliminar carpeta model de bin para asegurar el uso del JAR
+# (Esto fuerza a la JVM a cargar las clases de 'model' desde el JAR empaquetado en dist/lib/)
+if (Test-Path bin/model) {
+    Remove-Item -Path bin/model -Recurse -Force | Out-Null
+}
+
+# 7. Ejecutar Main
+Write-Host "[Ejecución] Iniciando la aplicación LlanquihueTourApp..." -ForegroundColor Yellow
+Write-Host "----------------------------------------------------"
+& $javaCmd -cp "bin;dist/lib/model.jar" ui.Main

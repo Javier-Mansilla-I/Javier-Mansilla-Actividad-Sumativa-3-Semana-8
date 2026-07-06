@@ -4,10 +4,11 @@ import model.*;
 import util.ValidadorRut;
 
 import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.IOException;
 import java.io.File;
+import java.io.IOException;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 
 /**
@@ -28,7 +29,7 @@ public class GestorDatos {
             return personas;
         }
 
-        try (BufferedReader br = new BufferedReader(new FileReader(archivo, StandardCharsets.UTF_8))) {
+        try (BufferedReader br = Files.newBufferedReader(Paths.get(rutaArchivo), StandardCharsets.UTF_8)) {
             String linea;
             int nroLinea = 0;
 

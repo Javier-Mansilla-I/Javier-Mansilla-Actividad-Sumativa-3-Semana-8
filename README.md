@@ -1,45 +1,43 @@
 # LlanquihueTourApp V2.0
 
-## Nombre del proyecto
-LlanquihueTourApp V2.0
+## Descripción de lo desarrollado esta semana
 
-## Breve descripción del sistema desarrollado
-Sistema de gestión y administración de turismo para la región de Llanquihue desarrollado en Java. Permite cargar y validar de forma robusta la información de personas (empleados, operadores, proveedores) desde archivos planos externos, controlando excepciones de formato, correos válidos y unicidad de RUTs. Adicionalmente, despliega un menú de consola interactivo para realizar búsquedas y filtros dinámicos.
+Se implementó **polimorfismo** mediante una jerarquía de clases que modela distintos servicios turísticos:
+- `ServicioTuristico` es la clase base con los atributos comunes `nombre` y `duración` y el método `mostrarInformacion()`.
+- Subclases `RutaGastronomica`, `PaseoLacustre` y `ExcursionCultural` sobrescriben `mostrarInformacion()` para presentar información específica.
+- Se creó la clase **`GestorServicios`** que genera una colección polimórfica (`List<ServicioTuristico>`) con al menos dos instancias de cada subclase.
+- En `Main` se recorren y muestran estos servicios antes de iniciar el menú interactivo.
+- Además, se solucionó un problema de compatibilidad de lectura de archivos en `GestorDatos` usando `BufferedReader` con `StandardCharsets.UTF_8` (compatible con Java 8+).
+- Se añadió el script **`build_and_run.ps1`** que compila el proyecto, empaqueta el paquete `model` en un JAR y ejecuta la aplicación.
 
-## Objetivo de la Semana
-El objetivo de esta semana es **"Creando jerarquías de clases con herencia simple"**. Se implementó una jerarquía de clases para modelar distintos servicios turísticos que ofrece la empresa, permitiendo la reutilización de atributos comunes (como nombre y duración) mediante una clase base, la especialización en subclases utilizando constructores con `super(...)`, la sobrescritura del método `toString()`, y la organización lógica del proyecto en paquetes por responsabilidades (`ui`, `model`, `data`, `util`).
+## Instrucciones para compilar y ejecutar el sistema
 
-## Clases Creadas e Implementadas
+### Requisitos previos
+- **JDK 8 o superior** (el script funciona con versiones 8‑23).
+- **PowerShell** (Windows) para ejecutar el script de build.
 
-### Paquete `model/` (Modelo de Datos)
-* **`ServicioTuristico`** (Superclase): Clase base con los atributos comunes `nombre` (String) y `duracionHoras` (int). Sobrescribe `toString()`.
-* **`RutaGastronomica`** (Subclase): Extiende a `ServicioTuristico`. Añade el atributo específico `numeroDeParadas` (int). Sobrescribe `toString()`.
-* **`PaseoLacustre`** (Subclase): Extiende a `ServicioTuristico`. Añade el atributo específico `tipoEmbarcacion` (String). Sobrescribe `toString()`.
-* **`ExcursionCultural`** (Subclase): Extiende a `ServicioTuristico`. Añade el atributo específico `lugarHistorico` (String). Sobrescribe `toString()`.
-* *(Existentes de la semana anterior: `Persona`, `Empleado`, `Operador`, `Proveedor` y `Direccion`)*.
-
-### Paquete `data/` (Persistencia y Datos de Prueba)
-* **`GestorServicios`** (Nueva clase): Encargada de instanciar casos de prueba de los servicios turísticos, creando al menos dos objetos de cada subclase (`RutaGastronomica`, `PaseoLacustre` y `ExcursionCultural`) en el método `obtenerServiciosDePrueba()`.
-* *(Existente de la semana anterior: `GestorDatos`, encargado de leer y validar las personas desde `personas.txt`)*.
-
-### Paquete `ui/` (Interfaz de Usuario)
-* **`Main`** (Punto de entrada): Llama a `GestorServicios.obtenerServiciosDePrueba()` y muestra los objetos resultantes por consola antes de dar paso al menú interactivo principal.
-
-### Paquete `util/` (Utilidades)
-* *(Existente de la semana anterior: `ValidadorRut`, encargado de la validación del RUT chileno)*.
-
-## Instrucciones para ejecutar Main
-
-Para ejecutar la aplicación principal, utiliza el script automatizado provisto en la raíz del proyecto.
-
-### Requisitos previos:
-* Tener instalado el **JDK 17 o superior** (el script busca automáticamente la versión activa en el sistema o bajo `C:\Program Files\Java`).
-* Ejecutar en una consola de comandos con soporte para PowerShell.
-
-### Pasos para compilar y ejecutar:
-1. Abre una consola de PowerShell en la carpeta raíz del proyecto.
-2. Ejecuta el siguiente comando para compilar todas las clases (empaquetando el modelo en una librería JAR en `dist/lib/`) y lanzar la clase `ui.Main`:
+### Pasos
+1. **Abrir una terminal PowerShell** en la raíz del proyecto (`LlanquihueTourApp.2.0`).
+2. Ejecutar el script de compilación y ejecución:
    ```powershell
    ./build_and_run.ps1
    ```
-3. Al iniciar, el programa listará automáticamente en consola los servicios turísticos de prueba creados y luego abrirá el menú interactivo.
+   El script realizará:
+   - Limpieza de carpetas `bin/` y `dist/`.
+   - Compilación de todo el código fuente Java.
+   - Empaquetado de las clases del paquete `model` en `dist/lib/model.jar`.
+   - Ejecución de la clase principal `ui.Main`.
+3. Al iniciarse, la aplicación mostrará los servicios turísticos creados y luego presentará el menú interactivo para gestionar personas.
+
+### Ejecutar sin el script (opcional)
+Si prefieres compilar manualmente:
+```bash
+# Compilar
+javac -d bin $(find src -name "*.java")
+# Ejecutar
+java -cp "bin;dist/lib/model.jar" ui.Main
+```
+
+---
+
+¡Disfruta explorando los servicios turísticos y las funcionalidades del sistema! 🎉

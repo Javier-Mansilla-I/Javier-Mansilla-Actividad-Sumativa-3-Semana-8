@@ -23,4 +23,9 @@ public class PaseoLacustre extends ServicioTuristico {
     public String toString() {
         return super.toString() + " | Tipo: PASEO LACUSTRE | Embarcación: " + tipoEmbarcacion;
     }
+
+    @Override
+    public void mostrarInformacion() {
+        System.out.println(this.toString());
+    }
 }

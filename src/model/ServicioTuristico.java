@@ -32,4 +32,12 @@ public class ServicioTuristico {
     public String toString() {
         return "Servicio: " + nombre + " | Duración: " + duracionHoras + " hrs";
     }
+
+    /**
+     * Muestra la información básica del servicio turístico.
+     */
+    public void mostrarInformacion() {
+        System.out.println(this.toString());
+    }
 }
+
