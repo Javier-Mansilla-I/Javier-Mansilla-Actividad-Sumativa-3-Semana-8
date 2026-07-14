@@ -38,6 +38,3 @@ javac -d bin $(find src -name "*.java")
 java -cp "bin;dist/lib/model.jar" ui.Main
 ```
 
----
-
-¡Disfruta explorando los servicios turísticos y las funcionalidades del sistema! 🎉
