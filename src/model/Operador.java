@@ -57,4 +57,13 @@ public class Operador extends Persona {
         return String.format("%s | Empresa: %s | Tipo de Operación: %s",
                 super.toString(), empresa, tipoOperacion);
     }
+
+    /**
+     * Resumen específico del operador para la interfaz Registrable.
+     */
+    @Override
+    public String mostrarResumen() {
+        return String.format("[OPERADOR] %s %s — RUT: %s | Empresa: %s | Operación: %s",
+                getNombre(), getApellido(), getRut(), empresa, tipoOperacion);
+    }
 }

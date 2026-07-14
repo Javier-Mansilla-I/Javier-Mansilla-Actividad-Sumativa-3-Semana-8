@@ -28,4 +28,13 @@ public class ExcursionCultural extends ServicioTuristico {
     public void mostrarInformacion() {
         System.out.println(this.toString());
     }
+
+    /**
+     * Resumen específico de la excursión cultural.
+     */
+    @Override
+    public String mostrarResumen() {
+        return String.format("[EXCURSIÓN CULTURAL] %s — Duración: %d horas | Lugar Histórico: %s",
+                getNombre(), getDuracionHoras(), lugarHistorico);
+    }
 }

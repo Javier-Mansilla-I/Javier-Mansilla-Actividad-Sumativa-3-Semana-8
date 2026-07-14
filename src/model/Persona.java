@@ -6,7 +6,7 @@ import util.ValidadorRut;
  * Representa una persona base en el ecosistema de Llanquihue Tour.
  * Contiene datos personales y validaciones de datos clave.
  */
-public class Persona {
+public class Persona implements Registrable {
     private String rut;
     private String nombre;
     private String apellido;
@@ -104,5 +104,13 @@ public class Persona {
     public String toString() {
         return String.format("RUT: %s | Nombre: %s %s | Correo: %s | Teléfono: %s | Dirección: %s",
                 rut, nombre, apellido, correo, telefono, (direccion != null ? direccion.toString() : "No definida"));
+    }
+
+    /**
+     * Resumen básico de la persona (contrato de la interfaz Registrable).
+     */
+    @Override
+    public String mostrarResumen() {
+        return String.format("[PERSONA] %s %s — RUT: %s", nombre, apellido, rut);
     }
 }

@@ -28,4 +28,13 @@ public class RutaGastronomica extends ServicioTuristico {
     public void mostrarInformacion() {
         System.out.println(this.toString());
     }
+
+    /**
+     * Resumen específico de la ruta gastronómica.
+     */
+    @Override
+    public String mostrarResumen() {
+        return String.format("[RUTA GASTRONÓMICA] %s — Duración: %d horas | Paradas: %d",
+                getNombre(), getDuracionHoras(), numeroDeParadas);
+    }
 }

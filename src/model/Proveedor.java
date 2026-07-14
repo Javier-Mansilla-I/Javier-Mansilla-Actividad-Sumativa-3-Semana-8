@@ -57,4 +57,13 @@ public class Proveedor extends Persona {
         return String.format("%s | Empresa: %s | Tipo de Servicio: %s",
                 super.toString(), empresa, tipoServicio);
     }
+
+    /**
+     * Resumen específico del proveedor para la interfaz Registrable.
+     */
+    @Override
+    public String mostrarResumen() {
+        return String.format("[PROVEEDOR] %s %s — RUT: %s | Empresa: %s | Servicio: %s",
+                getNombre(), getApellido(), getRut(), empresa, tipoServicio);
+    }
 }

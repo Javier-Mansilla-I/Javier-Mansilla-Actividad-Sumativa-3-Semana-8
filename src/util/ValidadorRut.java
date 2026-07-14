@@ -64,7 +64,11 @@ public class ValidadorRut {
     }
 
     /**
-     * Formatea un RUT al estándar chileno (XX.XXX.XXX-Y).
+     * Formatea un RUT chileno al estándar con puntos y guión.
+     * Ejemplo: entrada "123456789" → salida "12.345.678-9".
+     *
+     * @param rut cadena de RUT en cualquier formato (con o sin puntos/guión).
+     * @return RUT formateado con puntos de miles y dígito verificador separado por guión.
      */
     public static String formatearRut(String rut) {
         if (rut == null) return null;

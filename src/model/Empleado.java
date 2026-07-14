@@ -57,4 +57,13 @@ public class Empleado extends Persona {
         return String.format("%s | Puesto: %s | Sueldo Base: $%,.0f",
                 super.toString(), puesto, sueldoBase);
     }
+
+    /**
+     * Resumen específico del empleado para la interfaz Registrable.
+     */
+    @Override
+    public String mostrarResumen() {
+        return String.format("[EMPLEADO] %s %s — RUT: %s | Puesto: %s | Sueldo Base: $%,.0f",
+                getNombre(), getApellido(), getRut(), puesto, sueldoBase);
+    }
 }

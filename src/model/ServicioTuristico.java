@@ -3,7 +3,7 @@ package model;
 /**
  * Superclase que representa un Servicio Turístico.
  */
-public class ServicioTuristico {
+public class ServicioTuristico implements Registrable {
     private String nombre;
     private int duracionHoras;
 
@@ -38,6 +38,14 @@ public class ServicioTuristico {
      */
     public void mostrarInformacion() {
         System.out.println(this.toString());
+    }
+
+    /**
+     * Resumen básico del servicio (contrato de la interfaz Registrable).
+     */
+    @Override
+    public String mostrarResumen() {
+        return String.format("[SERVICIO] %s — Duración: %d horas", nombre, duracionHoras);
     }
 }
 
